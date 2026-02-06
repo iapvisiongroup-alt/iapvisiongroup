@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="IAPVISION GROUP - El presente y futuro ha llegado. Primera plataforma de streaming y sello musical con IA.">
+    <meta name="theme-color" content="#030303">
+    
+    <title>IAPVISION GROUP | Corporate</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CONFIGURACIÓN BASE --- */
+        body { font-family: 'Inter', sans-serif; background-color: #030303; color: white; margin: 0; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; }
+        h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; }
+        img { -webkit-user-drag: none; user-drag: none; pointer-events: auto; }
+        
+        /* INTRO Y ESTILOS */
+        #intro-layer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #000000; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.8s ease-out, visibility 0.8s; will-change: opacity; }
+        .intro-content { font-family: 'Space Grotesk', sans-serif; font-size: 8vw; font-weight: 800; letter-spacing: -1px; display: flex; gap: 3px; white-space: nowrap; }
+        @media (min-width: 768px) { .intro-content { letter-spacing: -4px; gap: 5px; font-size: 7vw; } }
+        .intro-iap { color: #3b82f6; opacity: 0; transform: scale(3); filter: blur(20px); }
+        .intro-vision { color: white; opacity: 0; transform: scale(3); filter: blur(20px); }
+        .animate-enter { animation: logo-strike 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        @keyframes logo-strike { 0% { opacity: 0; transform: scale(3); filter: blur(20px); } 100% { opacity: 1; transform: scale(1); filter: blur(0); } }
+        .intro-finished { opacity: 0; visibility: hidden; pointer-events: none; }
+        .text-gradient-hero { background: linear-gradient(to right, #ffffff 20%, #3b82f6 80%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .text-gradient-music { background: linear-gradient(to right, #a855f7 20%, #ec4899 80%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.3s ease; }
+        .glass-card:hover { border-color: rgba(59, 130, 246, 0.5); transform: translateY(-5px); }
+        .page-section { display: none; opacity: 0; transition: opacity 0.5s ease; padding-top: 80px; min-height: 80vh; will-change: opacity; }
+        .active-section { display: block; opacity: 1; }
+        .nav-link.active { color: white; border-bottom: 2px solid #3b82f6; }
+        a.nav-link { text-decoration: none; }
+        .pulse-ring { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); animation: pulse-blue 2s infinite; }
+        @keyframes pulse-blue { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); } }
+        .lang-btn { opacity: 0.5; transition: opacity 0.3s; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
+        .lang-btn:hover, .lang-btn.active-lang { opacity: 1; color: #3b82f6; }
+
+        /* COOKIE BANNER ESTILOS */
+        #cookie-banner { 
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10000; 
+            background-color: rgba(10, 5, 0, 0.95);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+            transform: translateY(100%); 
+            transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1); 
+            will-change: transform; 
+        }
+        #cookie-banner.banner-visible { 
+            transform: translateY(0) !important; 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="intro-layer">
+        <div class="intro-content">
+            <span id="logo-part-1" class="intro-iap">IAP</span>
+            <span id="logo-part-2" class="intro-vision">VISIONGROUP</span>
+        </div>
+    </div>
+
+    <nav class="fixed w-full z-40 bg-black/95 backdrop-blur-md border-b border-white/5 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="switchSection('home')">
+                <span class="text-xl md:text-2xl font-bold tracking-widest whitespace-nowrap"><span class="text-blue-500">IAP</span>VISIONGROUP</span>
+            </div>
+            <div class="hidden lg:flex items-center gap-6">
+                <button onclick="switchSection('home')" data-i18n="nav_home" class="nav-link active text-xs lg:text-sm font-bold uppercase tracking-wide text-gray-400 hover:text-white transition py-2">INICIO</button>
+                <button onclick="switchSection('vision')" data-i18n="nav_about" class="nav-link text-xs lg:text-sm font-bold uppercase tracking-wide text-gray-400 hover:text-white transition py-2">QUIÉNES SOMOS</button>
+                <a href="https://www.iapvision.com" target="_blank" class="nav-link text-xs lg:text-sm font-bold uppercase tracking-wide text-blue-400 hover:text-blue-300 transition py-2 flex items-center gap-1">IAPVISION <i data-lucide="external-link" class="w-3 h-3"></i></a>
+                <button onclick="switchSection('iapmusic')" data-i18n="nav_music" class="nav-link text-xs lg:text-sm font-bold uppercase tracking-wide text-gray-400 hover:text-white transition py-2">IAPMUSIC</button>
+                <button onclick="switchSection('iaptalents')" data-i18n="nav_talents" class="nav-link text-xs lg:text-sm font-bold uppercase tracking-wide text-gray-400 hover:text-white transition py-2">IAPTALENTS</button>
+                <button onclick="switchSection('creators')" class="nav-link text-xs lg:text-sm font-bold uppercase tracking-wide text-yellow-500 hover:text-yellow-400 transition py-2 flex items-center gap-1"><i data-lucide="star" class="w-3 h-3"></i> <span data-i18n="nav_creators">ZONA CREADORES</span></button>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="hidden md:flex items-center gap-2 border-r border-white/20 pr-4">
+                    <button onclick="changeLanguage('es')" class="lang-btn active-lang">ES</button>
+                    <button onclick="changeLanguage('en')" class="lang-btn">EN</button>
+                    <button onclick="changeLanguage('fr')" class="lang-btn">FR</button>
+                    <button onclick="changeLanguage('pt')" class="lang-btn">PT</button>
+                </div>
+                <button onclick="switchSection('contact')" data-i18n="nav_investors" class="bg-blue-600 hover:bg-blue-700 text-white text-[10px] md:text-xs font-bold px-4 py-2 md:px-5 md:py-2.5 rounded-full transition shadow-lg shadow-blue-900/50 whitespace-nowrap">PIDE TU PRESUPUESTO</button>
+                <button onclick="toggleMobileMenu()" class="lg:hidden text-gray-300 hover:text-white focus:outline-none"><i data-lucide="menu" class="w-6 h-6"></i></button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden lg:hidden absolute top-20 left-0 w-full bg-neutral-900 border-b border-white/10 shadow-2xl flex flex-col p-4 space-y-4">
+            <button onclick="switchSection('home')" data-i18n="nav_home" class="text-left text-sm font-bold uppercase text-gray-300 hover:text-white py-2 border-b border-white/5">INICIO</button>
+            <button onclick="switchSection('vision')" data-i18n="nav_about" class="text-left text-sm font-bold uppercase text-gray-300 hover:text-white py-2 border-b border-white/5">QUIÉNES SOMOS</button>
+            <a href="https://www.iapvision.com" target="_blank" class="text-left text-sm font-bold uppercase text-blue-400 hover:text-blue-300 py-2 border-b border-white/5 flex items-center gap-2">IAPVISION <i data-lucide="external-link" class="w-4 h-4"></i></a>
+            <button onclick="switchSection('iapmusic')" data-i18n="nav_music" class="text-left text-sm font-bold uppercase text-gray-300 hover:text-white py-2 border-b border-white/5">IAPMUSIC</button>
+            <button onclick="switchSection('iaptalents')" data-i18n="nav_talents" class="text-left text-sm font-bold uppercase text-gray-300 hover:text-white py-2 border-b border-white/5">IAPTALENTS</button>
+            <button onclick="switchSection('creators')" class="text-left text-sm font-bold uppercase text-yellow-500 hover:text-yellow-400 py-2 border-b border-white/5 flex items-center gap-2"><i data-lucide="star" class="w-4 h-4"></i> <span data-i18n="nav_creators">ZONA CREADORES</span></button>
+            <div class="flex items-center gap-4 py-2 border-b border-white/5">
+                <button onclick="changeLanguage('es')" class="lang-btn active-lang text-white">ES</button>
+                <button onclick="changeLanguage('en')" class="lang-btn text-white">EN</button>
+                <button onclick="changeLanguage('fr')" class="lang-btn text-white">FR</button>
+                <button onclick="changeLanguage('pt')" class="lang-btn text-white">PT</button>
+            </div>
+            <button onclick="switchSection('contact')" data-i18n="nav_investors_mobile" class="text-left text-sm font-bold text-blue-400 hover:text-blue-300 py-2">Prensa / Inversores</button>
+        </div>
+    </nav>
+
+    <main class="flex-grow">
+        <div id="home" class="page-section active-section">
+            <header class="relative min-h-screen flex items-center justify-center overflow-hidden py-32">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-900/20 via-black to-black z-0"></div>
+                <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center relative z-10">
+                    
+                    <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight mb-8 break-words"><span data-i18n="hero_title_1">IAPVISION GROUP</span> <br><span class="text-gradient-hero" data-i18n="hero_title_2">El presente y futuro ha llegado.</span></h1>
+                    
+                    <p class="text-lg md:text-xl text-white font-semibold max-w-4xl mx-auto mb-6 leading-relaxed" data-i18n="hero_subtitle_1">
+                        La primera empresa que integra toda la industria audiovisual, una revolución para el sector.
+                    </p>
+                    
+                    <p class="text-base sm:text-lg text-gray-400 max-w-4xl mx-auto mb-12 leading-relaxed px-2" data-i18n="hero_desc">
+                        Somos una empresa española que es la primera a nivel mundial en crear la primera plataforma streaming donde poder ver contenido 100% generado con IA: Cine, Series, Anime, Documentales, Infantil. Y ahora también <strong>IAPMUSIC</strong>, el primer sello musical el cual todos sus artistas son generados por IA con tecnología de vanguardia.
+                    </p>
+
+                </div>
+            </header>
+            
+            <section class="py-20 bg-neutral-900/30">
+                <div class="max-w-5xl mx-auto px-6 text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-8 text-white uppercase tracking-wider" data-i18n="services_title">NUESTROS SERVICIOS</h2>
+                    <div class="bg-white/5 backdrop-blur-sm p-8 rounded-2xl border border-white/10 shadow-2xl">
+                         <p class="text-gray-300 text-lg md:text-xl leading-relaxed max-w-4xl mx-auto" data-i18n="services_desc">
+                            Realizamos proyectos audiovisuales personalizados para cualquier cliente que precise de nuestros servicios, creación de anuncios, visuales para eventos, videoclips, producción musical, diseño gráfico y un largo etc. Infórmate sin compromiso y pon tu empresa en lo más alto del sector.
+                        </p>
+                    </div>
+                </div>
+            </section>
+            <section class="py-20">
+                <div class="max-w-4xl mx-auto px-6 text-center">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-4" data-i18n="roadmap_title">El Camino hacia 2026</h2>
+                    <p class="text-gray-400 mb-12 text-sm md:text-base" data-i18n="roadmap_subtitle">Estamos construyendo el futuro ahora mismo.</p>
+                    <div class="relative border-l border-blue-500/30 ml-4 md:ml-0 md:pl-0 space-y-12 md:space-y-16 text-left">
+                        <div class="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-12 items-center opacity-60">
+                            <div class="hidden md:block text-right text-gray-400 text-sm">2024</div><div class="absolute left-[-5px] md:left-1/2 md:-ml-[5px] w-3 h-3 rounded-full bg-gray-500"></div>
+                            <div class="md:text-left"><h4 class="text-lg md:text-xl font-bold text-white" data-i18n="roadmap_genesis">Génesis del Proyecto</h4><p class="text-gray-400 text-xs md:text-sm" data-i18n="roadmap_genesis_desc">Desarrollo de la arquitectura tecnológica.</p></div>
+                        </div>
+                        <div class="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-12 items-center">
+                            <div class="hidden md:block text-right text-blue-400 font-bold text-lg" data-i18n="roadmap_now">ACTUALIDAD (2026)</div>
+                            <div class="absolute left-[-9px] md:left-1/2 md:-ml-[9px] w-5 h-5 rounded-full bg-blue-500 pulse-ring border-4 border-black z-10"></div>
+                            <div class="md:text-left bg-blue-900/10 border border-blue-500/30 p-4 md:p-6 rounded-xl relative overflow-hidden">
+                                <div class="absolute inset-0 bg-blue-500/5 animate-pulse"></div>
+                                <h4 class="text-xl md:text-2xl font-bold text-white flex flex-wrap items-center gap-2 relative z-10"><span data-i18n="roadmap_round">Ronda de Inversión</span><span class="bg-blue-600 text-[10px] px-2 py-0.5 rounded text-white uppercase tracking-wider shadow-lg" data-i18n="roadmap_active">Activa</span></h4>
+                                <p class="text-gray-300 text-xs md:text-sm mt-2 relative z-10" data-i18n="roadmap_round_desc">Captando capital semilla y socios estratégicos.</p>
+                                <button onclick="switchSection('contact')" class="inline-block mt-4 text-blue-400 hover:text-white text-sm font-bold underline relative z-10" data-i18n="btn_deck">Solicitar Deck -></button>
+                            </div>
+                        </div>
+                        <div class="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-12 items-center">
+                            <div class="hidden md:block text-right text-yellow-500 font-bold text-sm">2026</div><div class="absolute left-[-5px] md:left-1/2 md:-ml-[5px] w-3 h-3 rounded-full bg-yellow-500 shadow-[0_0_15px_#eab308]"></div>
+                            <div class="md:text-left"><h4 class="text-lg md:text-xl font-bold text-white" data-i18n="roadmap_launch">Lanzamiento Global</h4><p class="text-gray-300 text-xs md:text-sm" data-i18n="roadmap_launch_desc">Estreno oficial en Web, TV y Mobile.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="vision" class="page-section">
+            <div class="max-w-4xl mx-auto px-6 py-12">
+                <span class="text-blue-500 font-bold tracking-widest uppercase text-xs mb-4 block" data-i18n="about_badge">Nuestra Trayectoria</span>
+                
+                <h1 class="text-3xl md:text-5xl font-bold mb-8 leading-tight">
+                    <span data-i18n="about_title_1">Somos empresarios</span><br>
+                    <span data-i18n="about_title_2">experimentados en el</span> <span class="text-blue-500" data-i18n="about_title_3">sector audiovisual.</span>
+                </h1>
+                
+                <div class="prose prose-invert prose-lg text-gray-300 mb-12 text-sm md:text-base">
+                    <p class="mb-4" data-i18n="about_text_1">
+                        Algunos de nuestros clientes son Nyno Vargas, MC Mari, Leo Santana, David Bisbal, Bruno Martini entre muchos otros.
+                    </p>
+                    <p data-i18n="about_text_2">
+                        Hemos trabajado para grandes empresas a nivel internacional y ahora nos embarcamos con todo nuestro conocimiento en crear IAPVISION y IAPMUSIC. El presente y futuro para la industria audiovisual ha llegado.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6 mb-20">
+                    <div class="bg-white/5 p-6 rounded-xl border border-white/10"><i data-lucide="zap" class="text-yellow-500 mb-4"></i><h3 class="font-bold text-white mb-2" data-i18n="val_speed">Velocidad</h3></div>
+                    <div class="bg-white/5 p-6 rounded-xl border border-white/10"><i data-lucide="globe" class="text-blue-500 mb-4"></i><h3 class="font-bold text-white mb-2" data-i18n="val_global">Globalidad</h3></div>
+                    <div class="bg-white/5 p-6 rounded-xl border border-white/10"><i data-lucide="heart" class="text-red-500 mb-4"></i><h3 class="font-bold text-white mb-2" data-i18n="val_immersion">Inmersión</h3></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="iapmusic" class="page-section bg-neutral-900">
+            <div class="max-w-7xl mx-auto px-6 py-20">
+                <div class="text-center mb-16">
+                    <span class="text-purple-500 font-bold tracking-widest uppercase text-xs mb-4 block">Audio Intelligence</span>
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6">IAP<span class="text-gradient-music">MUSIC</span></h1>
+                    <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto" data-i18n="music_subtitle">La banda sonora del futuro no se compone, se genera.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+                    <div class="glass-card p-6 rounded-xl border border-purple-500/20 bg-gradient-to-br from-purple-900/10 to-black">
+                        <i data-lucide="music" class="w-10 h-10 text-purple-400 mb-6"></i><h3 class="text-xl font-bold text-white mb-2" data-i18n="music_1_title">Generación Sinfónica</h3><p class="text-sm text-gray-400 leading-relaxed" data-i18n="music_1_desc">Composición orquestal adaptativa en segundos.</p>
+                    </div>
+                    <div class="glass-card p-6 rounded-xl border border-purple-500/20 bg-gradient-to-br from-purple-900/10 to-black">
+                        <i data-lucide="mic-2" class="w-10 h-10 text-pink-400 mb-6"></i><h3 class="text-xl font-bold text-white mb-2" data-i18n="music_2_title">Voces Sintéticas</h3><p class="text-sm text-gray-400 leading-relaxed" data-i18n="music_2_desc">Doblaje labial perfecto a más de 40 idiomas.</p>
+                    </div>
+                    <div class="glass-card p-6 rounded-xl border border-purple-500/20 bg-gradient-to-br from-purple-900/10 to-black">
+                        <i data-lucide="waves" class="w-10 h-10 text-blue-400 mb-6"></i><h3 class="text-xl font-bold text-white mb-2" data-i18n="music_3_title">SFX Neuronal</h3><p class="text-sm text-gray-400 leading-relaxed" data-i18n="music_3_desc">Biblioteca infinita de efectos de sonido.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="iaptalents" class="page-section bg-black border-y border-white/5">
+            <div class="max-w-7xl mx-auto px-6 py-20">
+                <div class="text-center mb-16">
+                    <span class="text-blue-500 font-bold tracking-widest uppercase text-xs mb-4 block" data-i18n="talents_badge">Star System Exclusivo</span>
+                    <h1 class="text-3xl md:text-5xl font-bold mb-6">IAP <span class="text-white">TALENTS</span></h1>
+                    <p class="text-gray-400 max-w-2xl mx-auto" data-i18n="talents_text_1">En IAPVISIONGROUP no contratamos actores, los diseñamos.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="group relative cursor-pointer">
+                        <div class="aspect-[3/4] overflow-hidden rounded-xl md:grayscale group-hover:grayscale-0 transition duration-700">
+                            <img src="https://www.iapvision.com/images/lyra.png" loading="lazy" alt="Lyra" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+                            <div class="absolute bottom-4 left-4"><h3 class="text-xl font-bold text-white">Lyra Vance</h3><p class="text-blue-500 text-[10px] tracking-widest uppercase font-bold">Drama</p></div>
+                        </div>
+                    </div>
+                    <div class="group relative cursor-pointer">
+                        <div class="aspect-[3/4] overflow-hidden rounded-xl md:grayscale group-hover:grayscale-0 transition duration-700">
+                            <img src="https://www.iapvision.com/images/Jarek9.png" loading="lazy" alt="Jarek" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+                            <div class="absolute bottom-4 left-4"><h3 class="text-xl font-bold text-white">Jarek G.</h3><p class="text-blue-500 text-[10px] tracking-widest uppercase font-bold">Action</p></div>
+                        </div>
+                    </div>
+                     <div class="group relative cursor-pointer">
+                        <div class="aspect-[3/4] overflow-hidden rounded-xl md:grayscale group-hover:grayscale-0 transition duration-700">
+                            <img src="https://www.iapvision.com/images/elara.png" loading="lazy" alt="Elara" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+                            <div class="absolute bottom-4 left-4"><h3 class="text-xl font-bold text-white">Elara Syn</h3><p class="text-blue-500 text-[10px] tracking-widest uppercase font-bold">Fantasy</p></div>
+                        </div>
+                    </div>
+                     <div class="group relative cursor-pointer">
+                        <div class="aspect-[3/4] overflow-hidden rounded-xl md:grayscale group-hover:grayscale-0 transition duration-700">
+                            <img src="https://www.iapvision.com/images/cian.png" loading="lazy" alt="Cian" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+                            <div class="absolute bottom-4 left-4"><h3 class="text-xl font-bold text-white">Cian K.</h3><p class="text-blue-500 text-[10px] tracking-widest uppercase font-bold">Indie</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="creators" class="page-section bg-[#0a0500]">
+            <div class="max-w-7xl mx-auto px-6 py-12">
+                <div class="text-center mb-12">
+                    <span class="text-yellow-500 font-bold tracking-widest uppercase" data-i18n="creator_badge">Creator Economy 2.0</span>
+                    <h1 class="text-3xl md:text-6xl font-bold mt-4" data-i18n="creator_title">Tu imaginación paga las facturas.</h1>
+                </div>
+                <div class="bg-neutral-900/80 border border-yellow-500/30 p-8 rounded-2xl shadow-2xl max-w-2xl mx-auto">
+                    <h3 class="text-xl font-bold text-white mb-6 text-center text-yellow-500 uppercase tracking-wide" data-i18n="form_title">Enviar Propuesta</h3>
+                    
+                    <form name="propuestas" method="POST" data-netlify="true" action="/?status=success" class="space-y-4">
+                        <input type="hidden" name="form-name" value="propuestas" />
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase mb-2" data-i18n="form_iam">Soy...</label>
+                            <select name="tipo_usuario" class="w-full bg-black border border-white/20 rounded-lg p-3 text-white outline-none">
+                                <option value="guionista" data-i18n="opt_writer">Guionista</option>
+                                <option value="creador" data-i18n="opt_creator">Creador</option>
+                                <option value="inversor" data-i18n="opt_investor">Inversor</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase mb-2" data-i18n="form_email">Email</label>
+                            <input required type="email" name="email" class="w-full bg-black border border-white/20 rounded-lg p-3 text-white outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase mb-2" data-i18n="form_msg">Mensaje</label>
+                            <textarea required name="mensaje" rows="4" class="w-full bg-black border border-white/20 rounded-lg p-3 text-white outline-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-gradient-to-r from-yellow-600 to-yellow-500 hover:from-yellow-500 hover:to-yellow-400 text-black font-bold py-4 rounded-lg uppercase tracking-wider" data-i18n="btn_send">ENVIAR</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="contact" class="page-section">
+            <div class="max-w-3xl mx-auto px-6 py-12">
+                <h1 class="text-3xl md:text-4xl font-bold mb-8 text-center" data-i18n="contact_title">Contacto Corporativo</h1>
+                <div class="bg-white/5 p-6 md:p-8 rounded-2xl border border-white/10 mb-20">
+                    
+                    <form name="contacto" method="POST" data-netlify="true" action="/?status=success" class="space-y-6">
+                        <input type="hidden" name="form-name" value="contacto" />
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <input required type="text" name="nombre" placeholder="Nombre" class="w-full bg-black border border-white/20 rounded-lg p-3 text-white outline-none">
+                            <input required type="email" name="email" placeholder="Email" class="w-full bg-black border border-white/20 rounded-lg p-3 text-white outline-none">
+                        </div>
+                        <select name="departamento" class="w-full bg-black border border-white/20 rounded-lg p-3 text-white outline-none">
+                            <option value="Contacto" data-i18n="opt_contact">Contacto</option>
+                            <option value="Presupuesto" data-i18n="opt_budget">Presupuesto</option>
+                        </select>
+                        <textarea required name="mensaje" rows="4" placeholder="Mensaje" class="w-full bg-black border border-white/20 rounded-lg p-3 text-white outline-none"></textarea>
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-lg transition" data-i18n="btn_send">ENVIAR</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="legal-notice" class="page-section">
+            <div class="max-w-4xl mx-auto px-6 py-12 text-gray-300 legal-text">
+                <h1 class="text-3xl font-bold text-white mb-8" data-i18n="legal_title">Aviso Legal</h1>
+                <div class="prose prose-invert text-gray-300 text-sm md:text-base space-y-6 text-justify leading-relaxed">
+                    <p>En cumplimiento con el deber de información recogido en artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y del Comercio Electrónico (LSSICE), a continuación se reflejan los siguientes datos:</p>
+                    
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-2">1. Datos Identificativos</h3>
+                        <p>La empresa titular de dominio web es <strong>IAPVISION GROUP S.L.</strong> (en adelante IAPVISION GROUP), con domicilio a estos efectos en España. Correo electrónico de contacto: contacto@iapvision.com.</p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-2">2. Usuarios</h3>
+                        <p>El acceso y/o uso de este portal de IAPVISION GROUP atribuye la condición de USUARIO, que acepta, desde dicho acceso y/o uso, las Condiciones Generales de Uso aquí reflejadas. Las citadas Condiciones serán de aplicación independientemente de las Condiciones Generales de Contratación que en su caso resulten de obligado cumplimiento.</p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-2">3. Propiedad Intelectual e Industrial</h3>
+                        <p>IAPVISION GROUP por sí o como cesionaria, es titular de todos los derechos de propiedad intelectual e industrial de su página web, así como de los elementos contenidos en la misma (a título enunciativo, imágenes, sonido, audio, vídeo, software o textos; marcas o logotipos, combinaciones de colores, estructura y diseño, selección de materiales usados, programas de ordenador necesarios para su funcionamiento, acceso y uso, etc.), titularidad de IAPVISION GROUP o bien de sus licenciantes. Todos los derechos reservados.</p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-2">4. Exclusión de Garantías y Responsabilidad</h3>
+                        <p>IAPVISION GROUP no se hace responsable, en ningún caso, de los daños y perjuicios de cualquier naturaleza que pudieran ocasionar, a título enunciativo: errores u omisiones en los contenidos, falta de disponibilidad del portal o la transmisión de virus o programas maliciosos o lesivos en los contenidos, a pesar de haber adoptado todas las medidas tecnológicas necesarias para evitarlo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="privacy-policy" class="page-section">
+            <div class="max-w-4xl mx-auto px-6 py-12 text-gray-300 legal-text">
+                <h1 class="text-3xl font-bold text-white mb-8" data-i18n="priv_title">Política Privacidad</h1>
+                <div class="prose prose-invert text-gray-300 text-sm md:text-base space-y-6 text-justify leading-relaxed">
+                    <p>En IAPVISION GROUP nos tomamos muy en serio la privacidad de nuestros usuarios. Esta Política de Privacidad describe cómo recopilamos, utilizamos y protegemos su información personal de acuerdo con el Reglamento General de Protección de Datos (RGPD) y la Ley Orgánica 3/2018 de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).</p>
+                    
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-2">1. Responsable del Tratamiento</h3>
+                        <p>Identidad: IAPVISION GROUP S.L.<br>
+                        Email: contacto@iapvision.com</p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-2">2. Finalidad</h3>
+                        <p>En IAPVISION GROUP tratamos la información que nos facilitan las personas interesadas con el fin de gestionar el envío de la información que nos soliciten, facilitar a los interesados presupuestos, ofertas de productos y servicios de su interés y gestionar las propuestas recibidas en la sección de creadores.</p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-2">3. Legitimación</h3>
+                        <p>La base legal para el tratamiento de sus datos es el consentimiento del interesado al rellenar los formularios de contacto, solicitud de presupuesto o suscripción habilitados en la web.</p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-2">4. Derechos</h3>
+                        <p>Cualquier persona tiene derecho a obtener confirmación sobre si en IAPVISION GROUP estamos tratando datos personales que les conciernan, o no. Las personas interesadas tienen derecho a acceder a sus datos personales, así como a solicitar la rectificación de los datos inexactos o, en su caso, solicitar su supresión cuando, entre otros motivos, los datos ya no sean necesarios para los fines que fueron recogidos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="cookies-policy" class="page-section">
+            <div class="max-w-4xl mx-auto px-6 py-12 text-gray-300 legal-text">
+                <h1 class="text-3xl font-bold text-white mb-8" data-i18n="cookie_title">Política Cookies</h1>
+                <div class="prose prose-invert text-gray-300 text-sm md:text-base space-y-6 text-justify leading-relaxed">
+                    <p>IAPVISION GROUP informa acerca del uso de las cookies en su página web.</p>
+                    
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-2">¿Qué son las cookies?</h3>
+                        <p>Las cookies son archivos que se pueden descargar en su equipo a través de las páginas web. Son herramientas que tienen un papel esencial para la prestación de numerosos servicios de la sociedad de la información. Entre otros, permiten a una página web almacenar y recuperar información sobre los hábitos de navegación de un usuario o de su equipo y, dependiendo de la información obtenida, se pueden utilizar para reconocer al usuario y mejorar el servicio ofrecido.</p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-2">Tipos de cookies utilizadas</h3>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li><strong>Cookies técnicas:</strong> Son aquellas que permiten al usuario la navegación a través de la página web y la utilización de las diferentes opciones o servicios que en ella existan.</li>
+                            <li><strong>Cookies de análisis:</strong> Permiten al responsable de las mismas, el seguimiento y análisis del comportamiento de los usuarios de los sitios web a los que están vinculadas.</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-2">Desactivación o eliminación de cookies</h3>
+                        <p>En cualquier momento podrá ejercer su derecho de desactivación o eliminación de cookies de este sitio web. Estas acciones se realizan de forma diferente en función del navegador que esté usando.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-black border-t border-white/10 py-10 mt-auto">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-center md:text-left">
+                <span class="text-xl font-bold tracking-widest whitespace-nowrap"><span class="text-blue-500">IAP</span>VISIONGROUP</span>
+            </div>
+            <div class="flex gap-6 text-sm text-gray-400">
+                <button onclick="switchSection('contact')" class="hover:text-white transition" data-i18n="footer_press">Prensa</button>
+                <button onclick="switchSection('legal-notice')" class="hover:text-white transition" data-i18n="footer_legal">Aviso Legal</button>
+                <button onclick="switchSection('privacy-policy')" class="hover:text-white transition" data-i18n="footer_priv">Privacidad</button>
+                <button onclick="openCookieSettings()" class="hover:text-white transition" data-i18n="footer_cookies">Cookies</button>
+            </div>
+            <div class="text-xs text-gray-600">&copy; 2026 IAPVISIONGROUP Inc. <span data-i18n="footer_rights">Todos los derechos reservados.</span></div>
+        </div>
+    </footer>
+
+    <div id="cookie-banner">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex-1 text-center md:text-left">
+                <div class="flex items-center justify-center md:justify-start gap-2 mb-2">
+                    <i data-lucide="cookie" class="w-5 h-5 text-blue-500"></i>
+                    <h3 class="text-white font-bold text-sm tracking-widest uppercase">Privacidad y Cookies</h3>
+                </div>
+                <p class="text-gray-400 text-xs md:text-sm leading-relaxed max-w-3xl" data-i18n="cookie_text">
+                    Utilizamos cookies propias y de terceros para mejorar su experiencia, analizar el tráfico y personalizar contenido. Respetamos su privacidad según el RGPD. ¿Nos da su consentimiento?
+                </p>
+                <button onclick="switchSection('cookies-policy')" class="text-blue-500 text-xs font-bold mt-2 hover:underline underline-offset-4" data-i18n="cookie_read_more">Leer Política de Cookies</button>
+            </div>
+            <div class="flex items-center gap-4 min-w-fit">
+                <button onclick="rejectCookies()" class="border border-white/20 hover:bg-white/5 text-white px-6 py-3 rounded-lg text-xs md:text-sm font-bold transition uppercase tracking-wider" data-i18n="cookie_reject">Rechazar</button>
+                <button onclick="acceptCookies()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg text-xs md:text-sm font-bold shadow-lg shadow-blue-900/50 transition uppercase tracking-wider" data-i18n="cookie_accept">Aceptar Todo</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => { 
+            if(window.lucide) lucide.createIcons();
+            // Comprobar cookies al cargar
+            checkCookieConsent();
+        });
+        
+        // --- TRADUCCIONES ACTUALIZADAS (Con Servicios y Pide Presupuesto) ---
+        const translations = {
+            es: {
+                nav_home: "INICIO", nav_about: "QUIENES SOMOS", nav_music: "IAPMUSIC", nav_talents: "IAPTALENTS", nav_creators: "ZONA CREADORES", 
+                nav_investors: "PIDE TU PRESUPUESTO",
+                hero_title_1: "IAPVISION GROUP", hero_title_2: "El presente y futuro ha llegado.",
+                hero_subtitle_1: "La primera empresa que integra toda la industria audiovisual, una revolución para el sector.",
+                hero_desc: "Somos una empresa española que es la primera a nivel mundial en crear la primera plataforma streaming donde poder ver contenido 100% generado con IA: Cine, Series, Anime, Documentales, Infantil. Y ahora también <strong>IAPMUSIC</strong>, el primer sello musical el cual todos sus artistas son generados por IA con tecnología de vanguardia.",
+                btn_investor: "Soy Inversor / Partner", btn_creator: "Soy Creador de Contenido",
+                
+                // NUEVA SECCIÓN SERVICIOS (ES)
+                services_title: "NUESTROS SERVICIOS",
+                services_desc: "Realizamos proyectos audiovisuales personalizados para cualquier cliente que precise de nuestros servicios, creación de anuncios, visuales para eventos, videoclips, producción musical, diseño gráfico y un largo etc. Infórmate sin compromiso y pon tu empresa en lo más alto del sector.",
+                
+                roadmap_now: "ACTUALIDAD (2026)", roadmap_launch: "Lanzamiento Global", roadmap_active: "Activa", roadmap_genesis: "Génesis del Proyecto", roadmap_subtitle: "Estamos construyendo el futuro ahora mismo.", roadmap_title: "El Camino hacia 2026",
+                roadmap_round: "Ronda de Inversión", roadmap_round_desc: "Captando capital semilla y socios estratégicos.", btn_deck: "Solicitar Deck ->",
+                
+                about_badge: "Nuestra Trayectoria",
+                about_title_1: "Somos empresarios", about_title_2: "experimentados en el", about_title_3: "sector audiovisual.",
+                about_text_1: "Algunos de nuestros clientes son Nyno Vargas, MC Mari, Leo Santana, David Bisbal, Bruno Martini entre muchos otros.",
+                about_text_2: "Hemos trabajado para grandes empresas a nivel internacional y ahora nos embarcamos con todo nuestro conocimiento en crear IAPVISION y IAPMUSIC. El presente y futuro para la industria audiovisual ha llegado.",
+                val_speed: "Velocidad", val_global: "Globalidad", val_immersion: "Inmersión",
+                
+                music_subtitle: "La banda sonora del futuro no se compone, se genera.",
+                music_1_title: "Generación Sinfónica", music_1_desc: "Composición orquestal adaptativa en segundos.",
+                music_2_title: "Voces Sintéticas", music_2_desc: "Doblaje labial perfecto a más de 40 idiomas.",
+                music_3_title: "SFX Neuronal", music_3_desc: "Biblioteca infinita de efectos.",
+                talents_badge: "Star System Exclusivo", talents_text_1: "No contratamos actores, los diseñamos.",
+                creator_badge: "Creator Economy 2.0", creator_title: "Tu imaginación paga las facturas.",
+                form_title: "Enviar Propuesta", btn_send: "ENVIAR",
+                contact_title: "Contacto Corporativo",
+                
+                // NUEVAS OPCIONES DE CONTACTO
+                opt_contact: "Contacto",
+                opt_budget: "Presupuesto",
+
+                legal_title: "Aviso Legal", priv_title: "Política de Privacidad", cookie_title: "Política de Cookies",
+                footer_press: "Prensa", footer_legal: "Aviso Legal", footer_priv: "Privacidad", footer_rights: "Todos los derechos reservados.",
+                cookie_text: "Utilizamos cookies propias y de terceros para mejorar su experiencia, analizar el tráfico y personalizar contenido. Respetamos su privacidad según el RGPD. ¿Nos da su consentimiento?",
+                cookie_accept: "Aceptar Todo",
+                cookie_reject: "Rechazar",
+                cookie_read_more: "Leer Política de Cookies",
+                footer_cookies: "Cookies"
+            },
+            en: {
+                nav_home: "HOME", nav_about: "ABOUT US", nav_music: "IAPMUSIC", nav_talents: "IAPTALENTS", nav_creators: "CREATORS ZONE", 
+                nav_investors: "REQUEST QUOTE",
+                hero_title_1: "IAPVISION GROUP", hero_title_2: "The present and future has arrived.",
+                hero_subtitle_1: "The first company to integrate the entire audiovisual industry, a revolution for the sector.",
+                hero_desc: "We are a Spanish company, the first globally to create a streaming platform for 100% AI-generated content: Movies, Series, Anime, Documentaries, Kids. And now <strong>IAPMUSIC</strong>, the first music label where all artists are AI-generated with cutting-edge technology.",
+                btn_investor: "I am an Investor", btn_creator: "I am a Creator",
+                
+                services_title: "OUR SERVICES",
+                services_desc: "We create personalized audiovisual projects for any client who needs our services: ad creation, event visuals, music videos, music production, graphic design, and much more. Get informed without obligation and take your company to the top of the sector.",
+
+                roadmap_now: "CURRENT (2026)", roadmap_launch: "Global Launch", roadmap_active: "Active", roadmap_genesis: "Project Genesis", roadmap_subtitle: "Building the future right now.", roadmap_title: "The Road to 2026",
+                roadmap_round: "Investment Round", roadmap_round_desc: "Raising seed capital.", btn_deck: "Request Deck ->",
+                
+                about_badge: "Our Trajectory",
+                about_title_1: "We are experienced", about_title_2: "entrepreneurs in the", about_title_3: "audiovisual sector.",
+                about_text_1: "Some of our clients include Nyno Vargas, MC Mari, Leo Santana, David Bisbal, Bruno Martini among many others.",
+                about_text_2: "We have worked for large international companies and now we embark with all our knowledge to create IAPVISION and IAPMUSIC. The present and future for the audiovisual industry has arrived.",
+                val_speed: "Speed", val_global: "Global Reach", val_immersion: "Immersion",
+
+                music_subtitle: "The soundtrack of the future is generated, not composed.",
+                music_1_title: "Symphonic Generation", music_1_desc: "Adaptive orchestral composition in seconds.",
+                music_2_title: "Synthetic Voices", music_2_desc: "Perfect lip-sync dubbing to 40+ languages.",
+                music_3_title: "Neural SFX", music_3_desc: "Infinite sound effects library.",
+                talents_badge: "Exclusive Star System", talents_text_1: "We don't hire actors, we design them.",
+                creator_badge: "Creator Economy 2.0", creator_title: "Your imagination pays the bills.",
+                form_title: "Send Proposal", btn_send: "SEND",
+                contact_title: "Corporate Contact",
+
+                // NEW CONTACT OPTIONS (EN)
+                opt_contact: "Contact",
+                opt_budget: "Quote",
+
+                legal_title: "Legal Notice", priv_title: "Privacy Policy", cookie_title: "Cookies Policy",
+                footer_press: "Press", footer_legal: "Legal", footer_priv: "Privacy", footer_rights: "All rights reserved.",
+                cookie_text: "We use our own and third-party cookies to improve your experience, analyze traffic, and personalize content. We respect your privacy under GDPR. Do you consent?",
+                cookie_accept: "Accept All",
+                cookie_reject: "Reject",
+                cookie_read_more: "Read Cookie Policy",
+                footer_cookies: "Cookies"
+            },
+            fr: {
+                nav_home: "ACCUEIL", nav_about: "QUI SOMMES-NOUS", nav_music: "IAPMUSIC", nav_talents: "IAPTALENTS", nav_creators: "ZONE CRÉATEURS", 
+                nav_investors: "DEMANDER UN DEVIS",
+                hero_title_1: "IAPVISION GROUP", hero_title_2: "Le présent et l'avenir sont là.",
+                hero_subtitle_1: "La première entreprise à intégrer toute l'industrie audiovisuelle, une révolution pour le secteur.",
+                hero_desc: "Nous sommes une entreprise espagnole, la première au monde à créer une plateforme de streaming pour du contenu 100% généré par IA: Films, Séries, Anime, Documentaires, Enfants. Et maintenant <strong>IAPMUSIC</strong>, le premier label musical où tous les artistes sont générés par IA avec une technologie de pointe.",
+                btn_investor: "Je suis Investisseur", btn_creator: "Je suis Créateur",
+                
+                services_title: "NOS SERVICES",
+                services_desc: "Nous réalisons des projets audiovisuels personnalisés pour tout client ayant besoin de nos services : création de publicités, visuels pour événements, clips vidéo, production musicale, conception graphique, etc. Renseignez-vous sans engagement et placez votre entreprise au sommet du secteur.",
+
+                roadmap_now: "ACTUEL (2026)", roadmap_launch: "Lancement Global", roadmap_active: "Actif", roadmap_genesis: "Genèse du Projet", roadmap_subtitle: "Nous construisons le futur.", roadmap_title: "La Route vers 2026",
+                roadmap_round: "Tour d'Investissement", roadmap_round_desc: "Levée de fonds.", btn_deck: "Demander Deck ->",
+                
+                about_badge: "Notre Trajectoire",
+                about_title_1: "Nous sommes des entrepreneurs", about_title_2: "expérimentés du", about_title_3: "secteur audiovisuel.",
+                about_text_1: "Certains de nos clients sont Nyno Vargas, MC Mari, Leo Santana, David Bisbal, Bruno Martini entre autres.",
+                about_text_2: "Nous avons travaillé pour de grandes entreprises internationales et nous nous lançons maintenant avec toutes nos connaissances dans la création d'IAPVISION et IAPMUSIC. Le présent et l'avenir de l'industrie audiovisuelle sont arrivés.",
+                val_speed: "Vitesse", val_global: "Portée Globale", val_immersion: "Immersion",
+
+                music_subtitle: "La bande originale du futur est générée.",
+                music_1_title: "Génération Symphonique", music_1_desc: "Composition orchestrale adaptative.",
+                music_2_title: "Voix Synthétiques", music_2_desc: "Doublage labial parfait.",
+                music_3_title: "SFX Neuronal", music_3_desc: "Bibliothèque d'effets sonores infinie.",
+                talents_badge: "Système Star", talents_text_1: "Nous concevons nos acteurs.",
+                creator_badge: "Économie Créateurs", creator_title: "Votre imagination paie.",
+                form_title: "Envoyer", btn_send: "ENVOYER",
+                contact_title: "Contact",
+                
+                // NEW CONTACT OPTIONS (FR)
+                opt_contact: "Contact",
+                opt_budget: "Devis",
+
+                legal_title: "Mentions Légales", priv_title: "Confidentialité", cookie_title: "Cookies",
+                footer_press: "Presse", footer_legal: "Légal", footer_priv: "Confidentialité", footer_rights: "Tous droits réservés.",
+                cookie_text: "Nous utilisons des cookies pour améliorer votre expérience, analyser le trafic et personnaliser le contenu. Nous respectons le RGPD. Acceptez-vous ?",
+                cookie_accept: "Tout Accepter",
+                cookie_reject: "Refuser",
+                cookie_read_more: "Politique de Cookies",
+                footer_cookies: "Cookies"
+            },
+            pt: {
+                nav_home: "INÍCIO", nav_about: "QUEM SOMOS", nav_music: "IAPMUSIC", nav_talents: "IAPTALENTS", nav_creators: "ZONA CRIADORES", 
+                nav_investors: "PEDIR ORÇAMENTO", 
+                hero_title_1: "IAPVISION GROUP", hero_title_2: "O presente e o futuro chegaram.",
+                hero_subtitle_1: "A primeira empresa a integrar toda a indústria audiovisual, uma revolução para o setor.",
+                hero_desc: "Somos uma empresa espanhola, a primeira no mundo a criar uma plataforma de streaming para conteúdo 100% gerado por IA: Filmes, Séries, Anime, Documentários, Kids. E agora <strong>IAPMUSIC</strong>, a primeira gravadora onde todos os artistas são gerados por IA com tecnologia de ponta.",
+                btn_investor: "Sou Investidor", btn_creator: "Sou Criador",
+                
+                services_title: "NOSSOS SERVIÇOS",
+                services_desc: "Realizamos projetos audiovisuais personalizados para qualquer cliente que precise dos nossos serviços: criação de anúncios, visuais para eventos, videoclipes, produção musical, design gráfico e muito mais. Informe-se sem compromisso e coloque sua empresa no topo do setor.",
+
+                roadmap_now: "ATUAL (2026)", roadmap_launch: "Lançamento Global", roadmap_active: "Ativa", roadmap_genesis: "Gênese do Projeto", roadmap_subtitle: "Construindo o futuro.", roadmap_title: "O Caminho para 2026",
+                roadmap_round: "Rodada de Investimento", roadmap_round_desc: "Captação de capital.", btn_deck: "Solicitar Deck ->",
+                
+                about_badge: "Nossa Trajetória",
+                about_title_1: "Somos empresários", about_title_2: "experientes no", about_title_3: "setor audiovisual.",
+                about_text_1: "Alguns dos nossos clientes são Nyno Vargas, MC Mari, Leo Santana, David Bisbal, Bruno Martini entre muitos outros.",
+                about_text_2: "Trabalhamos para grandes empresas internacionais e agora embarcamos com todo o nosso conhecimento na criação da IAPVISION e IAPMUSIC. O presente e o futuro da indústria audiovisual chegaram.",
+                val_speed: "Velocidade", val_global: "Alcance Global", val_immersion: "Imersão",
+
+                music_subtitle: "A trilha sonora do futuro é gerada.",
+                music_1_title: "Geração Sinfônica", music_1_desc: "Composição orquestral adaptativa.",
+                music_2_title: "Vozes Sintéticas", music_2_desc: "Dublagem perfeita.",
+                music_3_title: "SFX Neural", music_3_desc: "Biblioteca de efeitos sonoros infinita.",
+                talents_badge: "Star System", talents_text_1: "Projetamos nossos atores.",
+                creator_badge: "Economia Criadores", creator_title: "Sua imaginação paga.",
+                form_title: "Enviar", btn_send: "ENVIAR",
+                contact_title: "Contato",
+                
+                // NEW CONTACT OPTIONS (PT)
+                opt_contact: "Contato",
+                opt_budget: "Orçamento",
+
+                legal_title: "Aviso Legal", priv_title: "Privacidade", cookie_title: "Cookies",
+                footer_press: "Imprensa", footer_legal: "Legal", footer_priv: "Privacidade", footer_rights: "Todos os direitos reservados.",
+                cookie_text: "Usamos cookies para melhorar sua experiência, analisar tráfego e personalizar conteúdo. Respeitamos o RGPD. Você aceita?",
+                cookie_accept: "Aceitar Tudo",
+                cookie_reject: "Rejeitar",
+                cookie_read_more: "Política de Cookies",
+                footer_cookies: "Cookies"
+            }
+        };
+
+        function changeLanguage(lang) {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if(translations[lang][key]) el.innerHTML = translations[lang][key];
+            });
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active-lang', 'text-blue-500');
+                if(btn.textContent.toLowerCase() === lang) btn.classList.add('active-lang', 'text-blue-500');
+            });
+        }
+
+        function switchSection(sectionId) {
+            document.getElementById('mobile-menu').classList.add('hidden');
+            document.querySelectorAll('.page-section').forEach(sec => {
+                sec.classList.remove('active-section');
+                sec.style.display = 'none';
+            });
+            document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
+
+            const target = document.getElementById(sectionId);
+            if(target) {
+                target.style.display = 'block';
+                setTimeout(() => target.classList.add('active-section'), 10);
+            }
+            
+            const activeBtn = document.querySelector(`button[onclick="switchSection('${sectionId}')"]`);
+            if(activeBtn && activeBtn.classList.contains('nav-link')) activeBtn.classList.add('active');
+            
+            window.scrollTo(0,0);
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('intro-layer').classList.add('intro-finished');
+            }, 2500);
+        });
+
+        // --- LÓGICA DE COOKIES (GDPR) CORREGIDA ---
+        // IMPORTANTE: He cambiado la clave a 'v2' para ignorar tu elección anterior y forzar que salga de nuevo.
+        const COOKIE_STORAGE_KEY = 'iap_consent_v2'; 
+
+        function checkCookieConsent() {
+            const consent = localStorage.getItem(COOKIE_STORAGE_KEY);
+            const banner = document.getElementById('cookie-banner');
+            
+            if (!consent) {
+                // REDUCIDO TIEMPO DE ESPERA A 2 SEGUNDOS
+                console.log("No hay consentimiento previo (v2). Mostrando banner en 2s...");
+                setTimeout(() => {
+                    banner.classList.add('banner-visible');
+                }, 2000);
+            } else {
+                 console.log("Consentimiento ya registrado: " + consent);
+                 if(consent === 'accepted') enableAnalytics();
+            }
+        }
+
+        function acceptCookies() {
+            localStorage.setItem(COOKIE_STORAGE_KEY, 'accepted');
+            document.getElementById('cookie-banner').classList.remove('banner-visible');
+            enableAnalytics();
+        }
+
+        function rejectCookies() {
+            localStorage.setItem(COOKIE_STORAGE_KEY, 'rejected');
+            document.getElementById('cookie-banner').classList.remove('banner-visible');
+            console.log("Cookies rechazadas: Seguimiento desactivado.");
+        }
+
+        function openCookieSettings() {
+             document.getElementById('cookie-banner').classList.add('banner-visible');
+        }
+
+        function enableAnalytics() {
+            console.log('Consentimiento aceptado: Cargando scripts de analítica...');
+            // AQUÍ PEGA TUS SCRIPTS DE SEGUIMIENTO (Google Analytics, Pixel, etc.)
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('status') === 'success') {
+            alert("¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.");
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    </script>
+</body>
+</html>
+```</candidate>
